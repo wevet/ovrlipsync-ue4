@@ -1,5 +1,5 @@
-#include "OVRLipSyncPrivatePCH.h"
 #include "LipSyncMicInputComponent.h"
+#include "OVRLipSyncPrivatePCH.h"
 #include "OVRLipSyncContextComponent.h"
 
 #include "VoiceCapture.h"

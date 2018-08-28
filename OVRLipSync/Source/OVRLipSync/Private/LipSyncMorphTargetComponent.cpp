@@ -1,5 +1,6 @@
-#include "OVRLipSyncPrivatePCH.h"
 #include "LipSyncMorphTargetComponent.h"
+#include "OVRLipSyncPrivatePCH.h"
+
 
 ULipSyncMorphTargetComponent::ULipSyncMorphTargetComponent(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
@@ -39,8 +40,10 @@ void ULipSyncMorphTargetComponent::TickComponent(float DeltaTime, ELevelTick Tic
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-    if (MouseMesh == nullptr)
-        return;
+	if (MouseMesh == nullptr)
+	{
+		return;
+	}
     FOVRLipSyncFrame LipSyncFrame;
     if (ovrLipSyncSuccess == GetPhonemeFrame(&LipSyncFrame))
     {

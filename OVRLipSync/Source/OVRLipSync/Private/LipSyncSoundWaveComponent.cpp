@@ -1,5 +1,5 @@
-#include "OVRLipSyncPrivatePCH.h"
 #include "LipSyncSoundWaveComponent.h"
+#include "OVRLipSyncPrivatePCH.h"
 #include "OVRLipSyncContextComponent.h"
 
 

@@ -1,18 +1,21 @@
-﻿#include "OVRLipSyncPrivatePCH.h"
-#include "VisemeGenerationWorker.h"
+﻿#include "VisemeGenerationWorker.h"
+#include "OVRLipSyncPrivatePCH.h"
 
 //General Log
 //DEFINE_LOG_CATEGORY(OVRLipSyncPlugin);
 
-FVisemeGenerationWorker::FVisemeGenerationWorker() {}
+FVisemeGenerationWorker::FVisemeGenerationWorker() 
+{
+}
 
-
-FVisemeGenerationWorker::~FVisemeGenerationWorker() {
+FVisemeGenerationWorker::~FVisemeGenerationWorker() 
+{
 	delete Thread;
 	Thread = NULL;
 }
 
-void FVisemeGenerationWorker::ShutDown() {
+void FVisemeGenerationWorker::ShutDown()
+{
 	Stop();
 	Thread->WaitForCompletion();
 	delete Thread;
@@ -21,10 +24,10 @@ void FVisemeGenerationWorker::ShutDown() {
 	Manager->ShutdownLipSync();
 }
 
-bool FVisemeGenerationWorker::Init() {
-
-
-	if (!Manager) {
+bool FVisemeGenerationWorker::Init() 
+{
+	if (!Manager) 
+	{
 		ClientMessage(FString(TEXT("Speech Recognition Thread failed to start")));
 		InitSuccess = false;
 		return InitSuccess;
@@ -49,23 +52,24 @@ bool FVisemeGenerationWorker::Init() {
 	return InitSuccess;
 }
 
-uint32 FVisemeGenerationWorker::Run() {
+uint32 FVisemeGenerationWorker::Run() 
+{
 
-	if (!Manager || Manager->ovrLipSyncSuccess < 0)
+	if (!Manager || ovrLipSyncSuccess < 0)
 	{
-		ClientMessage(FString(TEXT("Pending delete on Manager object")));
+		//UE_LOG(LogTemp, Warning, TEXT("Pending delete on Manager object"));
 		return 1;
 	}
 	
 	if (!VoiceCapture->Start())
 	{
-		ClientMessage(FString(TEXT("Failed to start recording")));
+		//UE_LOG(LogTemp, Warning, TEXT("Failed to start recording"));
 		return 2;
 	}
 
-	if (Manager->IsInitialized() != Manager->ovrLipSyncSuccess)
+	if (Manager->IsInitialized() != ovrLipSyncSuccess)
 	{
-		ClientMessage(FString(TEXT("OVR Lip Sync not initialized")));
+		//UE_LOG(LogTemp, Warning, TEXT("OVR Lip Sync not initialized"));
 		return 3;
 	}
 
@@ -92,7 +96,6 @@ uint32 FVisemeGenerationWorker::Run() {
 			uint32 Flags = 0;
 
 			Manager->ProcessFrameExternal(sampleBuf, (ovrLipSyncFlag)Flags);
-
 			Manager->VisemeGenerated_method(Manager->CurrentFrame);
 		}
 	}
@@ -102,18 +105,21 @@ uint32 FVisemeGenerationWorker::Run() {
 	return 0;
 }
 
-void FVisemeGenerationWorker::Stop() {
+void FVisemeGenerationWorker::Stop() 
+{
 	StopTaskCounter.Increment();
 }
 
-bool FVisemeGenerationWorker::StartThread(AVisemeGenerationActor* manager) {
+bool FVisemeGenerationWorker::StartThread(AVisemeGenerationActor* manager)
+{
 	Manager = manager;
-	
+
 	// Initialisation:
 	VoiceCapture = FVoiceModule::Get().CreateVoiceCapture();
 	if (!VoiceCapture.IsValid())
+	{
 		InitSuccess = false;
-
+	}
 	int32 threadIdx = ILipSync::Get().GetInstanceCounter();
 	FString threadName = FString("FVisemeGenerationWorker:") + FString::FromInt(threadIdx);
 	InitSuccess = true;
@@ -122,6 +128,7 @@ bool FVisemeGenerationWorker::StartThread(AVisemeGenerationActor* manager) {
 	return InitSuccess;
 }
 
-void FVisemeGenerationWorker::ClientMessage(FString text) {
-	UE_LOG(OVRLipSyncPluginLog, Log, TEXT("%s"), *text);
+void FVisemeGenerationWorker::ClientMessage(FString text) 
+{
+	UE_LOG(LogTemp, Log, TEXT("%s"), *text);
 }

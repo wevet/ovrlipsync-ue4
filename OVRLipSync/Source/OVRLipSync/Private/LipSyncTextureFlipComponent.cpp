@@ -1,5 +1,5 @@
-#include "OVRLipSyncPrivatePCH.h"
 #include "LipSyncTextureFlipComponent.h"
+#include "OVRLipSyncPrivatePCH.h"
 
 ULipSyncTextureFlipComponent::ULipSyncTextureFlipComponent(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)
@@ -34,8 +34,10 @@ void ULipSyncTextureFlipComponent::TickComponent(float DeltaTime, ELevelTick Tic
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-    if (MouseMaterail == nullptr)
-        return;
+	if (MouseMaterail == nullptr)
+	{
+		return;
+	}
     FOVRLipSyncFrame LipSyncFrame;
     if (ovrLipSyncSuccess == GetPhonemeFrame(&LipSyncFrame))
     {

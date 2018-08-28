@@ -1,5 +1,6 @@
-#include "OVRLipSyncPrivatePCH.h"
 #include "OVRLipSyncContextComponent.h"
+#include "OVRLipSyncPrivatePCH.h"
+
 
 
 UOVRLipSyncContextComponent::UOVRLipSyncContextComponent(const FObjectInitializer& ObjectInitializer)
@@ -11,22 +12,22 @@ UOVRLipSyncContextComponent::UOVRLipSyncContextComponent(const FObjectInitialize
 
         FConstructorStatics()
         {
-            VisemeNames.SetNum(ovrLipSyncViseme::VisemesCount);
-            VisemeNames[ovrLipSyncViseme::sil] = "sil";
-            VisemeNames[ovrLipSyncViseme::PP] = "PP";
-            VisemeNames[ovrLipSyncViseme::FF] = "FF";
-            VisemeNames[ovrLipSyncViseme::TH] = "TH";
-            VisemeNames[ovrLipSyncViseme::DD] = "DD";
-            VisemeNames[ovrLipSyncViseme::kk] = "kk";
-            VisemeNames[ovrLipSyncViseme::CH] = "CH";
-            VisemeNames[ovrLipSyncViseme::SS] = "SS";
-            VisemeNames[ovrLipSyncViseme::nn] = "nn";
-            VisemeNames[ovrLipSyncViseme::RR] = "RR";
-            VisemeNames[ovrLipSyncViseme::aa] = "aa";
-            VisemeNames[ovrLipSyncViseme::E] = "E";
-            VisemeNames[ovrLipSyncViseme::ih] = "ih";
-            VisemeNames[ovrLipSyncViseme::oh] = "oh";
-            VisemeNames[ovrLipSyncViseme::ou] = "ou";
+            VisemeNames.SetNum((int)ovrLipSyncViseme::VisemesCount);
+            VisemeNames[(int)ovrLipSyncViseme::sil] = "sil";
+            VisemeNames[(int)ovrLipSyncViseme::PP] = "PP";
+            VisemeNames[(int)ovrLipSyncViseme::FF] = "FF";
+            VisemeNames[(int)ovrLipSyncViseme::TH] = "TH";
+            VisemeNames[(int)ovrLipSyncViseme::DD] = "DD";
+            VisemeNames[(int)ovrLipSyncViseme::kk] = "kk";
+            VisemeNames[(int)ovrLipSyncViseme::CH] = "CH";
+            VisemeNames[(int)ovrLipSyncViseme::SS] = "SS";
+            VisemeNames[(int)ovrLipSyncViseme::nn] = "nn";
+            VisemeNames[(int)ovrLipSyncViseme::RR] = "RR";
+            VisemeNames[(int)ovrLipSyncViseme::aa] = "aa";
+            VisemeNames[(int)ovrLipSyncViseme::E]  = "E";
+            VisemeNames[(int)ovrLipSyncViseme::ih] = "ih";
+            VisemeNames[(int)ovrLipSyncViseme::oh] = "oh";
+            VisemeNames[(int)ovrLipSyncViseme::ou] = "ou";
         }
     };
     static FConstructorStatics ConstructorStatics;
@@ -75,8 +76,10 @@ void UOVRLipSyncContextComponent::TickComponent(float DeltaTime, ELevelTick Tick
 void UOVRLipSyncContextComponent::ProcessFrame(const uint8* AudioData, const int32 BufferSize)
 {
     check(BufferSize >= VISEME_BUF_SIZE);
-    if (CurrentContext == 0)
-        return;
+	if (CurrentContext == 0)
+	{
+		return;
+	}
 
     for (uint32 i = 0; i < VISEME_SAMPLES; i++)
     {
@@ -106,8 +109,10 @@ void UOVRLipSyncContextComponent::ProcessFrame(const uint8* AudioData, const int
 
 int UOVRLipSyncContextComponent::GetPhonemeFrame(FOVRLipSyncFrame *OutFrame)
 {
-    if (FOVRLipSync::IsInitialized() != ovrLipSyncSuccess)
-        return (int)ovrLipSyncError::Unknown;
+	if (FOVRLipSync::IsInitialized() != ovrLipSyncSuccess)
+	{
+		return (int)ovrLipSyncError::Unknown;
+	}
 
     // only lock the frame copy operation
     {
