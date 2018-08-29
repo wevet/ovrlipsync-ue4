@@ -26,11 +26,11 @@ dll_ovrlipsyncProcessFrameInterleavedActor OVRLipSyncProcessFrameInterleavedActo
 AVisemeGenerationActor::AVisemeGenerationActor(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	//Define Paths for direct dll bind
-	FString BinariesRoot = FPaths::Combine(*FPaths::GameDir(), TEXT("Binaries"));
+	FString BinariesRoot = FPaths::Combine(*FPaths::ProjectDir(), TEXT("Binaries"));
 	IPluginManager &plgnMgr = IPluginManager::Get();
 	TSharedPtr<IPlugin> plugin = plgnMgr.FindPlugin("OVRLipSync");
 	if (!plugin.IsValid())
-	{ 
+	{
 		//UE_LOG(LogTemp, Error, TEXT("Plugin not found."));
 		return;
 	}
@@ -53,7 +53,7 @@ AVisemeGenerationActor::AVisemeGenerationActor(const FObjectInitializer& ObjectI
 
 	UE_LOG(LogTemp, Log, TEXT("Fetching dll from %s"), *DllFilepath);
 
-	if (!FPaths::FileExists(DllFilepath)) 
+	if (!FPaths::FileExists(DllFilepath))
 	{
 		//UE_LOG(LogTemp, Error, TEXT("%s File is missing (Did you copy Binaries into project root?)! Hydra Unavailable."), *OVRDLLString);
 		return;
@@ -62,20 +62,20 @@ AVisemeGenerationActor::AVisemeGenerationActor(const FObjectInitializer& ObjectI
 	OVRDLLHandle = NULL;
 	OVRDLLHandle = FPlatformProcess::GetDllHandle(*DllFilepath);
 
-	if (!OVRDLLHandle) 
+	if (!OVRDLLHandle)
 	{
 		//UE_LOG(LogTemp, Error, TEXT("GetDllHandle failed, Hydra Unavailable."));
 		//UE_LOG(LogTemp, Error, TEXT("Full path debug: %s."), *DllFilepath);
 		return;
 	}
 
-	OVRLipSyncInitializeActor    = (dll_ovrlipsyncInitializeActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_Initialize"));
-	OVRLipSyncShutdownActor      = (dll_ovrlipsyncShutdownActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_Shutdown"));
-	OVRLipSyncGetVersionActor    = (dll_ovrlipsyncGetVersionActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_GetVersion"));
+	OVRLipSyncInitializeActor = (dll_ovrlipsyncInitializeActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_Initialize"));
+	OVRLipSyncShutdownActor = (dll_ovrlipsyncShutdownActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_Shutdown"));
+	OVRLipSyncGetVersionActor = (dll_ovrlipsyncGetVersionActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_GetVersion"));
 	OVRLipSyncCreateContextActor = (dll_ovrlipsyncCreateContextActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_CreateContext"));
 	OVRLipSyncDestroyContextActor = (dll_ovrlipsyncDestroyContextActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_DestroyContext"));
-	OVRLipSyncResetContextActor   = (dll_ovrlipsyncResetContextActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_ResetContext"));
-	OVRLipSyncSendSignalActor   = (dll_ovrlipsyncSendSignalActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_SendSignal"));
+	OVRLipSyncResetContextActor = (dll_ovrlipsyncResetContextActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_ResetContext"));
+	OVRLipSyncSendSignalActor = (dll_ovrlipsyncSendSignalActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_SendSignal"));
 	OVRLipSyncProcessFrameActor = (dll_ovrlipsyncProcessFrameActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_ProcessFrame"));
 	OVRLipSyncProcessFrameInterleavedActor = (dll_ovrlipsyncProcessFrameInterleavedActor)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_ProcessFrameInterleaved"));
 }
@@ -106,14 +106,14 @@ bool AVisemeGenerationActor::Init()
 }
 
 bool AVisemeGenerationActor::Shutdown()
-{	
-	if (listenerThread != NULL) 
+{
+	if (listenerThread != NULL)
 	{
 		listenerThread->ShutDown();
 		listenerThread = NULL;
 		return true;
 	}
-	else{
+	else {
 		return false;
 	}
 }
@@ -126,12 +126,12 @@ void AVisemeGenerationActor::VisemeGenerated_trigger(FVisemeGeneratedSignature d
 void AVisemeGenerationActor::VisemeGenerated_method(FOVRLipSyncFrame LipSyncFrame)
 {
 	FSimpleDelegateGraphTask::CreateAndDispatchWhenReady
-		(
+	(
 		FSimpleDelegateGraphTask::FDelegate::CreateStatic(&VisemeGenerated_trigger, OnVisemeGenerated, LipSyncFrame)
 		, TStatId()
 		, nullptr
 		, ENamedThreads::GameThread
-		);
+	);
 
 
 }

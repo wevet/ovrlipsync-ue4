@@ -4,11 +4,11 @@
 //General Log
 //DEFINE_LOG_CATEGORY(OVRLipSyncPlugin);
 
-FVisemeGenerationWorker::FVisemeGenerationWorker() 
+FVisemeGenerationWorker::FVisemeGenerationWorker()
 {
 }
 
-FVisemeGenerationWorker::~FVisemeGenerationWorker() 
+FVisemeGenerationWorker::~FVisemeGenerationWorker()
 {
 	delete Thread;
 	Thread = NULL;
@@ -24,9 +24,9 @@ void FVisemeGenerationWorker::ShutDown()
 	Manager->ShutdownLipSync();
 }
 
-bool FVisemeGenerationWorker::Init() 
+bool FVisemeGenerationWorker::Init()
 {
-	if (!Manager) 
+	if (!Manager)
 	{
 		ClientMessage(FString(TEXT("Speech Recognition Thread failed to start")));
 		InitSuccess = false;
@@ -52,7 +52,7 @@ bool FVisemeGenerationWorker::Init()
 	return InitSuccess;
 }
 
-uint32 FVisemeGenerationWorker::Run() 
+uint32 FVisemeGenerationWorker::Run()
 {
 
 	if (!Manager || ovrLipSyncSuccess < 0)
@@ -60,7 +60,7 @@ uint32 FVisemeGenerationWorker::Run()
 		//UE_LOG(LogTemp, Warning, TEXT("Pending delete on Manager object"));
 		return 1;
 	}
-	
+
 	if (!VoiceCapture->Start())
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("Failed to start recording"));
@@ -105,7 +105,7 @@ uint32 FVisemeGenerationWorker::Run()
 	return 0;
 }
 
-void FVisemeGenerationWorker::Stop() 
+void FVisemeGenerationWorker::Stop()
 {
 	StopTaskCounter.Increment();
 }
@@ -128,7 +128,7 @@ bool FVisemeGenerationWorker::StartThread(AVisemeGenerationActor* manager)
 	return InitSuccess;
 }
 
-void FVisemeGenerationWorker::ClientMessage(FString text) 
+void FVisemeGenerationWorker::ClientMessage(FString text)
 {
 	UE_LOG(LogTemp, Log, TEXT("%s"), *text);
 }

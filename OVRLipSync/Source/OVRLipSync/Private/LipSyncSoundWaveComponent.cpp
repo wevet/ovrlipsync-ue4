@@ -30,11 +30,10 @@ void ULipSyncSoundWaveComponent::TickComponent(float DeltaTime, ELevelTick TickT
 	uint32 BytesAvailable = 0;
 	//EVoiceCaptureState::Type CaptureState = VoiceCapture->GetCaptureState(BytesAvailable);
 	//if (CaptureState == EVoiceCaptureState::Ok)
-	{
-		TempBuffer.SetNumUninitialized(BytesAvailable);
-		//VoiceCapture->GetVoiceData(TempBuffer.GetData(), BytesAvailable, BytesAvailable);
-		SoundBuffer.Append(TempBuffer);
-	}
+	TempBuffer.SetNumUninitialized(BytesAvailable);
+	//VoiceCapture->GetVoiceData(TempBuffer.GetData(), BytesAvailable, BytesAvailable);
+	SoundBuffer.Append(TempBuffer);
+
 	if (SoundBuffer.Num() >= VISEME_BUF_SIZE)
 	{
 		LipSyncContext->ProcessFrame(SoundBuffer.GetData(), VISEME_BUF_SIZE);

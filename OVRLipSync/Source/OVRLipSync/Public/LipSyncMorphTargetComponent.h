@@ -12,16 +12,16 @@ public:
 
 	ULipSyncMorphTargetComponent(const FObjectInitializer& ObjectInitializer);
 
-    virtual void BeginPlay() override;
-    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 
 public:
-    UPROPERTY(Category = Visemes, EditDefaultsOnly, BlueprintReadOnly)
-    FName MouseMeshTag;
+	UPROPERTY(Category = Visemes, EditDefaultsOnly, BlueprintReadOnly)
+	FName MouseMeshTag;
 
 private:
-    UPROPERTY(Transient)
-    class USkeletalMeshComponent* MouseMesh;
+	UPROPERTY(Transient)
+	class USkeletalMeshComponent* MouseMesh;
 };

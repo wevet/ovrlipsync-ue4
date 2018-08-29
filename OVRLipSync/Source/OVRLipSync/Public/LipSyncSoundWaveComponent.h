@@ -22,7 +22,7 @@ private:
 
 	// Reference to the SoundWave we are decompressing
 	//USoundWave* CompressedSoundWaveRef;
-	
+
 	TArray<uint8> SoundBuffer;
 	TArray<uint8> TempBuffer;
 };

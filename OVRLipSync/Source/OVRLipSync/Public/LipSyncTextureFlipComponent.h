@@ -11,16 +11,18 @@ class OVRLIPSYNC_API ULipSyncTextureFlipComponent : public UOVRLipSyncContextCom
 public:
 	ULipSyncTextureFlipComponent(const FObjectInitializer& ObjectInitializer);
 
-    virtual void BeginPlay() override;
-    virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 
 public:
-    UPROPERTY(Category = Visemes, EditDefaultsOnly, BlueprintReadOnly)
-    TArray<class UTexture*> VisemeTextures;
-    UPROPERTY(Category = Visemes, EditDefaultsOnly, BlueprintReadWrite)
-    class UMaterialInstanceDynamic* MouseMaterail;
-    UPROPERTY(Category = Visemes, EditDefaultsOnly, BlueprintReadOnly)
-    FName MouseTextureName;
+	UPROPERTY(Category = Visemes, EditDefaultsOnly, BlueprintReadOnly)
+	TArray<class UTexture*> VisemeTextures;
+
+	UPROPERTY(Category = Visemes, EditDefaultsOnly, BlueprintReadWrite)
+	class UMaterialInstanceDynamic* MouseMaterail;
+
+	UPROPERTY(Category = Visemes, EditDefaultsOnly, BlueprintReadOnly)
+	FName MouseTextureName;
 };

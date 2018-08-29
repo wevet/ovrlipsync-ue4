@@ -27,7 +27,7 @@ dll_ovrlipsyncProcessFrameInterleaved OVRLipSyncProcessFrameInterleaved;
 void FOVRLipSyncModule::StartupModule()
 {
 	//Define Paths for direct dll bind
-	FString BinariesRoot = FPaths::Combine(*FPaths::GameDir(), TEXT("Binaries"));
+	FString BinariesRoot = FPaths::Combine(*FPaths::ProjectDir(), TEXT("Binaries"));
 	IPluginManager &plgnMgr = IPluginManager::Get();
 	TSharedPtr<IPlugin> plugin = plgnMgr.FindPlugin("OVRLipSync");
 	if (!plugin.IsValid())
@@ -69,14 +69,14 @@ void FOVRLipSyncModule::StartupModule()
 		return;
 	}
 
-	OVRLipSyncInitialize     = (dll_ovrlipsyncInitialize)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_Initialize"));
-	OVRLipSyncShutdown       = (dll_ovrlipsyncShutdown)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_Shutdown"));
-	OVRLipSyncGetVersion     = (dll_ovrlipsyncGetVersion)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_GetVersion"));
-	OVRLipSyncCreateContext  = (dll_ovrlipsyncCreateContext)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_CreateContext"));
+	OVRLipSyncInitialize = (dll_ovrlipsyncInitialize)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_Initialize"));
+	OVRLipSyncShutdown = (dll_ovrlipsyncShutdown)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_Shutdown"));
+	OVRLipSyncGetVersion = (dll_ovrlipsyncGetVersion)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_GetVersion"));
+	OVRLipSyncCreateContext = (dll_ovrlipsyncCreateContext)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_CreateContext"));
 	OVRLipSyncDestroyContext = (dll_ovrlipsyncDestroyContext)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_DestroyContext"));
-	OVRLipSyncResetContext   = (dll_ovrlipsyncResetContext)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_ResetContext"));
-	OVRLipSyncSendSignal     = (dll_ovrlipsyncSendSignal)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_SendSignal"));
-	OVRLipSyncProcessFrame   = (dll_ovrlipsyncProcessFrame)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_ProcessFrame"));
+	OVRLipSyncResetContext = (dll_ovrlipsyncResetContext)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_ResetContext"));
+	OVRLipSyncSendSignal = (dll_ovrlipsyncSendSignal)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_SendSignal"));
+	OVRLipSyncProcessFrame = (dll_ovrlipsyncProcessFrame)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_ProcessFrame"));
 	OVRLipSyncProcessFrameInterleaved = (dll_ovrlipsyncProcessFrameInterleaved)FPlatformProcess::GetDllExport(OVRDLLHandle, TEXT("ovrLipSyncDll_ProcessFrameInterleaved"));
 	FOVRLipSync::Initialize();
 }
@@ -86,12 +86,7 @@ void FOVRLipSyncModule::ShutdownModule()
 	FOVRLipSync::Shutdown();
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
 IMPLEMENT_MODULE(FOVRLipSyncModule, OVRLipSync)
-
-/////////////////////////////////////////////////////////////////////////////////////////////
 
 int FOVRLipSync::sOVRLipSyncInit = -1;
 
